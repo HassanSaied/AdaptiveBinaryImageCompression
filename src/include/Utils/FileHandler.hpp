@@ -6,6 +6,8 @@
 #include <opencv2/opencv.hpp>
 
 typedef cv::Mat_<bool> BinaryImage;
+typedef std::vector<bool> BinaryStream;
+typedef unsigned char byte;
 
 namespace FileHandler
 {
@@ -18,12 +20,42 @@ namespace FileHandler
 void writeBinaryFileTo(const std::vector<bool> &data, const std::string &path);
 
 /**
+*
+* @param data
+* @param stream
+* @param index
+*/
+void writeByteToBinaryStream(byte data, BinaryStream& stream, int& index);
+
+/**
+*
+* @param data
+* @param stream
+* @param index
+*/
+void writeIntToBinaryStream(int data, BinaryStream& stream, int& index);
+
+/**
  * @brief Reads binary data from a file
  * @param path Path to file
  * @return Binary data stored in the file
  * @throw std::runtime_error If no file at path or it cannot be opened
  */
 std::vector<bool> readBinaryFileAt(const std::string &path);
+
+/**
+ *
+ * @param stream
+ * @param index
+ */
+byte readeByteFromBinaryStream(const BinaryStream& stream, int& index);
+
+/**
+*
+* @param stream
+* @param index
+*/
+int readeIntFromBinaryStream(const BinaryStream& stream, int& index);
 
 /**
  * @brief Reads a binary image

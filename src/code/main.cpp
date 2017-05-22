@@ -1,12 +1,15 @@
 #include <Utils/FileHandler.hpp>
 #include <Utils/Display.hpp>
-#include <opencv2/opencv.hpp>
+#include <Utils/Statistics.hpp>
+#include <Algorithms/BWTRLEencoder.hpp>
+#include <cstdio>
+#include <Algorithms/BTWRLEdecoder.hpp>
 
 int main(int argc, char ** argv)
 {
-    if (argc != 2)
+    /*if (argc != 2)
     {
-        std::cout << "usage: adic <DataSetPath>\n";
+        std::cout << "usage: abic <DataSetPath>\n";
         return -1;
     }
     //Loads the entire Dataset
@@ -29,6 +32,28 @@ int main(int argc, char ** argv)
     }
     std::cout << "Ones: " << numberOfOnes << ", Zeros: " << numberOfZeros << std::endl;
     // Sample Display
-    Display::displayBinaryImage(binaryImage);
+    Display::displayBinaryImage(binaryImage);*/
+
+
+    int j = 8;
+    BinaryStream bs(32);
+    int n =0;
+    FileHandler::writeIntToBinaryStream(j,bs,n);
+    n = 0;
+    int i = FileHandler::readeIntFromBinaryStream(bs,n);
+
+    std::vector<BinaryImage> binaryImages = FileHandler::getBinaryImagesWithExtension("/home/mina", "jpg", 180);
+    BWTRLEencoder bwtrlEencoder(binaryImages[0]);
+    BinaryStream binaryStream = bwtrlEencoder.encode();
+    BWTRLEdecoder bwtrlEdecoder(binaryStream);
+    printf("finished\n");
+    if(Statistics::isSameImage(binaryImages[0], bwtrlEdecoder.decode())){
+        printf("Thanks GOD!\n");
+    }
+    std::cout<<Statistics::getCompressionRatio(binaryImages[0],binaryStream);
+    getchar();
+
     return 0;
 }
+
+

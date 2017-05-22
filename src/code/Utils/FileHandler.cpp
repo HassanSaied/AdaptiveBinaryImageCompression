@@ -25,6 +25,22 @@ void FileHandler::writeBinaryFileTo(const std::vector<bool> &data, const std::st
     }
 }
 
+void FileHandler::writeByteToBinaryStream(byte data, BinaryStream& stream, int& index)
+{
+   for(int i = 8 *sizeof(byte)-1; i>=0; --i){
+        stream[index+i] = (bool)((data >>= 1)& 1);
+   }
+    index+=8 *sizeof(byte);
+}
+
+void FileHandler::writeIntToBinaryStream(int data, BinaryStream& stream, int& index)
+{
+    for(int i = 8 *sizeof(int)-1; i>=0; --i){
+        stream[index+i] = (bool)((data >>= 1)& 1);
+    }
+    index+=8 *sizeof(int);
+}
+
 std::vector<bool> FileHandler::readBinaryFileAt(const std::string &path)
 {
     std::ifstream binaryFile(path.c_str(), std::ios::binary | std::ios::in);
@@ -47,6 +63,22 @@ std::vector<bool> FileHandler::readBinaryFileAt(const std::string &path)
         }
     }
     return data;
+}
+
+byte FileHandler::readeByteFromBinaryStream(const BinaryStream& stream, int& index){
+    byte byteRead = 0;
+    for(int i = 0; i<8*sizeof(byte); ++i){
+        (stream[index++]? byteRead |= 1 << (8*sizeof(byte) - i): byteRead &= ~(1 << (8*sizeof(byte) - i)));
+    }
+    return byteRead;
+}
+
+int FileHandler::readeIntFromBinaryStream(const BinaryStream& stream, int& index){
+    int intRead = 0;
+    for(int i = 0; i<8*sizeof(int); ++i){
+        (stream[index++]? intRead |= 1 << (8*sizeof(int) - i): intRead &= ~(1 << (8*sizeof(int) - i)));
+    }
+    return intRead;
 }
 
 BinaryImage FileHandler::readBinaryImageAt(const std::string &path, double thresholdValue)

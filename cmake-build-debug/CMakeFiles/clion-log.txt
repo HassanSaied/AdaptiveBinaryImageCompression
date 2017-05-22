@@ -1,0 +1,4 @@
+/home/mina/clion-2016.3.5/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/mina/AdaptiveBinaryImageCompression
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/mina/AdaptiveBinaryImageCompression/cmake-build-debug
